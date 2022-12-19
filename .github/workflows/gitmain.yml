@@ -22,4 +22,6 @@ jobs:
       - name: setup docker buildx
         uses: docker/setup-buildx-action@v2
       - name: check docker version
-        run: echo docker --version
+        run: |-
+          echo docker --version
+          echo project name: ${PROJECT_NAME}
