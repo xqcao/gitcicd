@@ -12,8 +12,14 @@ jobs:
       - name: CheckOut ci
         uses: actions/checkout@v2
       - name: Output Run ID
-        run: echo ${{ github.run_id }}
+        run: echo run id is ${{ github.run_id }}
       - name: Output Run Number
-        run: echo ${{ github.run_number }}
+        run: echo run number is ${{ github.run_number }}
       - name: Output Run Attempt
-        run: echo ${{ github.run_attempt }}
+        run: echo run_attempt is ${{ github.run_attempt }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: setup docker buildx
+        uses: docker/setup-buildx-action@v2
+      - name: check docker version
+        run: echo docker --version
