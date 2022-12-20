@@ -69,6 +69,7 @@ jobs:
         run: |-
           terraform plan -destroy \
           -var="username=adam" \
-          -var="imagename=${{needs.prep-docker.outputs.DOCKER_IMAGE}}"
+          -var="imagename=${{needs.prep-docker.outputs.DOCKER_IMAGE}}" \
           -out=PLAN
         working-directory: ./tfdir
+      
