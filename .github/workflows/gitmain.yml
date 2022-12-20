@@ -77,7 +77,7 @@ jobs:
       - name: Terraform Apply
         id: tf_apply
         run: |-
-          terraform apply PLAN
+          terraform apply -auto-approve
       - name: set tf Output
         id: tf_out
         run: |-
