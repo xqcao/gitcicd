@@ -52,6 +52,7 @@ jobs:
           echo docker iamge color is ${{needs.prep-docker.outputs.IMAGE_COLOR}}
   terrfornjob:
     runs-on: ubuntu-latest
+    needs: prep-docker
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -66,7 +67,8 @@ jobs:
       - name: Terraform Plan
         id: tf_plan
         run: |-
-          terrafrom plan -destroy \
+          terraform plan -destroy \
           -var="username=adam" \
+          -var="imagename=${{needs.prep-docker.outputs.DOCKER_IMAGE}}"
           -out=PLAN
         working-directory: ./tfdir
