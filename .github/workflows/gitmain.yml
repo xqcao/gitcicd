@@ -8,6 +8,9 @@ env:
 jobs:
   prep-docker:
     runs-on: ubuntu-latest
+    outputs:
+      DOCKER_IMAGE: ${{steps.share_infos.outputs.IMG_TAG}}
+      IMAGE_VERSION: ${{steps.share_infos.outputs.IMG_VERSION}}
     steps:
       - name: CheckOut ci
         uses: actions/checkout@v2
@@ -31,3 +34,16 @@ jobs:
         with:
           push: true
           tags: ${{secrets.DOCKER_USER_NAME}}/gitflaskapp:${{github.run_number}}
+      - name: share infos
+        id: share_infos
+        run: |
+          echo "::set-output name=IMG_TAG::${{secrets.DOCKER_USER_NAME}}/gitflaskapp:${{github.run_number}}"
+          echo "::set-output name=IMG_VERSION::${{ github.run_number }}.0.0"
+  job2:
+    runs-on: ubuntu-latest
+    needs: prep-docker
+    steps:
+      - name: check first job docker tag
+        run: |
+          echo docker image full name is ${{needs.prep-docker.outputs.DOCKER_IMAGE}}
+          echo docker iamge version is ${{needs.prep-docker.outputs.IMAGE_VERSION}}
