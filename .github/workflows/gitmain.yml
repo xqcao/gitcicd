@@ -77,7 +77,8 @@ jobs:
       - name: Terraform Apply
         id: tf_apply
         run: |-
-          terraform apply -auto-approve
+          terraform apply PLAN
+        working-directory: ./tfdir
       - name: set tf Output
         id: tf_out
         run: |-
