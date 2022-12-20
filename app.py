@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 # from waitress import serve
 
 from gevent.pywsgi import WSGIServer
@@ -13,12 +13,21 @@ def index():
 
 @app.route('/api/users')
 def apiUsers():
-    uus = [{"username": "admin", "email": "admin@example.com"},
-           {"username": "cat", "email": "cat@example.com"}]
-    return jsonify(uus)
+    return jsonify(users)
+
+
+@app.route('/api/add/user', methods=['POST'])
+def addUser():
+    newuser = request.get_json(silent=True)
+    print(newuser)
+    users.append(newuser)
+
+    return jsonify({"name": "dog", "email": "gog@example.com"})
 
 
 if __name__ == '__main__':
+    users = [{"username": "admin", "email": "admin@example.com"},
+             {"username": "cat", "email": "cat@example.com"}]
     # from waitress import serve
     # serve(app, host="0.0.0.0", port=5001)
 

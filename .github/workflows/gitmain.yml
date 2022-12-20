@@ -39,7 +39,7 @@ jobs:
         id: share_infos
         run: |
           echo "::set-output name=IMG_TAG::helloworld/gitflaskapp:${{github.run_number}}"
-          echo "::set-output name=IMG_VERSION::${{ github.run_number }}.0.0"
+          echo "MG_VERSION=${{ github.run_number }}.0.0" >>$GITHUB_OUTPUT
           echo "mycolor=blue123" >>$GITHUB_OUTPUT
   job2:
     runs-on: ubuntu-latest
@@ -50,3 +50,23 @@ jobs:
           echo docker image full name is ${{needs.prep-docker.outputs.DOCKER_IMAGE}}
           echo docker iamge version is ${{needs.prep-docker.outputs.IMAGE_VERSION}}
           echo docker iamge color is ${{needs.prep-docker.outputs.IMAGE_COLOR}}
+  terrfornjob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+      - name: Terraform Init
+        id: tf_init
+        run: terraform init 
+        working-directory: ./tfdir
+      - name: Terraform Plan
+        id: tf_plan
+        run: |-
+          terrafrom plan -destroy \
+          -var="username=adam" \
+          -out=PLAN
+        working-directory: ./tfdir
